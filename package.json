@@ -1,5 +1,5 @@
 {
-  "name": "hexo-htmlnano",
+  "name": "hexo-htmlnano-mini",
   "version": "1.0.0",
   "description": "A lightweight Hexo plugin to minify HTML using htmlnano",
   "main": "index.js",
