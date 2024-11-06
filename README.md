@@ -1,5 +1,7 @@
 # hexo-htmlnano-mini
 
+![npm](https://img.shields.io/npm/v/hexo-htmlnano-mini)![npm](https://img.shields.io/npm/l/hexo-htmlnano-mini)
+
 A lightweight Hexo plugin to minify HTML using [htmlnano](https://github.com/posthtml/htmlnano). This plugin helps reduce HTML file sizes, improving loading speed and optimizing site performance.
 
 
