@@ -27,12 +27,6 @@ htmlnano:
   minifyJs: true                      # Enable inline JavaScript minification
 ```
 
-
-
-> **Note**: `minifyCss`, `minifyJs`, and `minifySvg` require additional dependencies (`cssnano`, `postcss`, `terser`, and `svgo`). These are already included in this plugin.
-
-
-
 ## Usage
 
 Once installed and configured, the plugin will automatically compress HTML files (including inline CSS, JS, and SVG) during the generation process. To apply the plugin, simply run:
