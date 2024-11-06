@@ -18,12 +18,13 @@ After installation, add the following `htmlnano` configuration to your Hexo proj
 
 ```yaml
 htmlnano:
-  collapseWhitespace: conservative    # Collapse whitespace conservatively
+  enable: true                        # Main switch
+  enableInDev: false                  # Whether to enable compression in the development server (hexo s)
+  collapseWhitespace: conservative    # Compress whitespace conservatively
   removeComments: safe                # Safely remove comments
   removeEmptyAttributes: true         # Remove empty attributes
   minifyCss: true                     # Enable inline CSS minification
   minifyJs: true                      # Enable inline JavaScript minification
-  minifySvg: true                     # Enable inline SVG minification
 ```
 
 

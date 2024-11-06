@@ -4,34 +4,77 @@ const { minify } = require('terser');
 const postcss = require('postcss');
 const cssnano = require('cssnano');
 
-// Default HTML compression options
+// Default compression options
 const DEFAULT_HTML_OPTIONS = {
-  collapseWhitespace: 'conservative',    // Conservatively collapse whitespace
-  removeComments: 'safe',                // Safely remove comments
-  removeEmptyAttributes: true,           // Remove empty attributes
-  minifyJs: true,                        // Minify inline JavaScript
-  minifySvg: true,                       // Minify inline SVG
-  minifyCss: {                          // Custom CSS minification configuration
+  enable: true,                        // Enable by default
+  enableInDev: false,                  // Disable in development mode by default
+  collapseWhitespace: 'conservative',    
+  removeComments: 'safe',                
+  removeEmptyAttributes: true,           
+  minifyJs: true,                        
+  minifyCss: {                          
     preset: ['default', {
       discardComments: { removeAll: true },
       normalizeWhitespace: true,
-      minifySelectors: false,           // Disable selector minification
-      calc: false,                      // Disable calc optimization
-      colormin: false,                  // Disable color minification
-      discardEmpty: false,              // Don't remove empty rules
-      mergeRules: false                 // Don't merge rules
+      minifySelectors: false,           
+      calc: false,                      
+      colormin: false,                  
+      discardEmpty: false,              
+      mergeRules: false                 
     }]
   }
 };
 
+// Create processing options (excluding control options)
+function createProcessOptions(hexo) {
+  const { enable, enableInDev, ...processOptions } = DEFAULT_HTML_OPTIONS;
+  const userConfig = hexo.config.htmlnano || {};
+  const { enable: userEnable, enableInDev: userEnableInDev, ...userProcessOptions } = userConfig;
+  
+  return Object.assign({}, processOptions, userProcessOptions);
+}
+
+// Check if in generate/deploy phase
+function isGenerating() {
+  const args = process.argv;
+  return args.includes('generate') || args.includes('g') || 
+         args.includes('deploy') || args.includes('d');
+}
+
+// Check if in server (development) phase
+function isServer() {
+  const args = process.argv;
+  return args.includes('server') || args.includes('s');
+}
+
+// Determine if the plugin is enabled
+function isEnabled(hexo) {
+  const config = hexo.config.htmlnano;
+  const enable = config?.enable ?? DEFAULT_HTML_OPTIONS.enable;
+  const enableInDev = config?.enableInDev ?? DEFAULT_HTML_OPTIONS.enableInDev;
+  
+  return enable && (isServer() ? enableInDev : true);
+}
+
+let compressionNoticeShown = false;
+
+// Show compression status message
+function showCompressionNotice(hexo) {
+  if (!compressionNoticeShown && isEnabled(hexo)) {
+    const mode = isServer() ? 'development' : 'production';
+    hexo.log.info(`HTML/CSS/JS compression is enabled in ${mode} mode`);
+    compressionNoticeShown = true;
+  }
+}
+
 // Register HTML compression
 hexo.extend.filter.register('after_render:html', async function(str) {
-  const options = Object.assign({}, DEFAULT_HTML_OPTIONS, hexo.config.htmlnano || {});
+  showCompressionNotice(hexo);
+  if (!isEnabled(hexo)) return str;
   
   try {
+    const options = createProcessOptions(hexo);
     const result = await htmlnano.process(str, options);
-    const savedBytes = str.length - result.html.length;
-    hexo.log.info(`HTML compressed: ${str.length} -> ${result.html.length} bytes (saved ${savedBytes} bytes)`);
     return result.html;
   } catch (error) {
     hexo.log.error('HTML minification failed:', error);
@@ -39,8 +82,10 @@ hexo.extend.filter.register('after_render:html', async function(str) {
   }
 });
 
-// Register CSS compression with relaxed error handling
+// Register CSS compression
 hexo.extend.filter.register('after_render:css', async function(str) {
+  if (!isEnabled(hexo)) return str;
+  
   try {
     const result = await postcss([
       cssnano({
@@ -55,21 +100,20 @@ hexo.extend.filter.register('after_render:css', async function(str) {
         }]
       })
     ]).process(str, { 
-      from: undefined,
-      parser: require('postcss-safe-parser')  // prevent css problem
+      from: undefined
     });
     
-    const savedBytes = str.length - result.css.length;
-    hexo.log.info(`CSS compressed: ${str.length} -> ${result.css.length} bytes (saved ${savedBytes} bytes)`);
     return result.css;
   } catch (error) {
-    hexo.log.warn('CSS minification failed, skipping this part:', error);
+    hexo.log.error('CSS minification failed:', error);
     return str;
   }
 });
 
 // Register JavaScript compression
 hexo.extend.filter.register('after_render:js', async function(str) {
+  if (!isEnabled(hexo)) return str;
+  
   try {
     const result = await minify(str, {
       compress: {
@@ -79,11 +123,9 @@ hexo.extend.filter.register('after_render:js', async function(str) {
       },
       mangle: false
     });
-    const savedBytes = str.length - result.code.length;
-    hexo.log.info(`JS compressed: ${str.length} -> ${result.code.length} bytes (saved ${savedBytes} bytes)`);
     return result.code;
   } catch (error) {
-    hexo.log.warn('JavaScript minification failed, skipping this part:', error);
+    hexo.log.error('JavaScript minification failed:', error);
     return str;
   }
 });
