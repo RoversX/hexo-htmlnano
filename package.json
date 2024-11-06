@@ -1,0 +1,21 @@
+{
+  "name": "hexo-htmlnano",
+  "version": "1.0.0",
+  "description": "A lightweight Hexo plugin to minify HTML using htmlnano",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "hexo",
+    "html",
+    "minify",
+    "htmlnano",
+    "hexo-plugin"
+  ],
+  "author": "roversx",
+  "license": "MIT",
+  "dependencies": {
+    "htmlnano": "^2.1.1"
+  }
+}
