@@ -19,6 +19,7 @@
     "cssnano": "^7.0.6",
     "htmlnano": "^2.1.1",
     "postcss": "^8.4.47",
-    "terser": "^5.36.0"
+    "terser": "^5.36.0",
+    "micromatch": "^4.0.8"
   }
 }

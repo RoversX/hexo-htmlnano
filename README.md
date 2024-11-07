@@ -23,6 +23,8 @@ After installation, add the following `htmlnano` configuration to your Hexo proj
 htmlnano:
   enable: true                        # Main switch
   enableInDev: false                  # Whether to enable compression in the development server (hexo s)
+  exclude:                            # https://github.com/micromatch/micromatch#extended-globbing
+     #- '**/mycss.css'      
   collapseWhitespace: conservative    # Compress whitespace conservatively
   removeComments: safe                # Safely remove comments
   removeEmptyAttributes: true         # Remove empty attributes
