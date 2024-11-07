@@ -30,10 +30,10 @@ const DEFAULT_HTML_OPTIONS = {
 // Create processing options (excluding control options)
 function createProcessOptions(hexo) {
   const { enable, enableInDev, exclude, ...processOptions } = DEFAULT_HTML_OPTIONS;
-  const userConfig = hexo.config.htmlnano || {};
-  const { enable: userEnable, enableInDev: userEnableInDev, exclude: userExclude, ...userProcessOptions } = userConfig;
+  const userOptions = hexo.config.htmlnano || {};
+  const { enable: userEnable, enableInDev: userEnableInDev, exclude: userExclude, ...userProcessOptions } = userOptions;
   
-  return Object.assign({}, processOptions, userProcessOptions);
+  return { ...processOptions, ...userProcessOptions };
 }
 
 // Check if in generate/deploy phase
@@ -51,21 +51,16 @@ function isServer() {
 
 // Determine if the plugin is enabled
 function isEnabled(hexo) {
-  const config = hexo.config.htmlnano;
-  const enable = config?.enable ?? DEFAULT_HTML_OPTIONS.enable;
-  const enableInDev = config?.enableInDev ?? DEFAULT_HTML_OPTIONS.enableInDev;
-  
-  return enable && (isServer() ? enableInDev : true);
+  const config = hexo.config.htmlnano || {};
+  return (config.enable ?? DEFAULT_HTML_OPTIONS.enable) && 
+         (isServer() ? (config.enableInDev ?? DEFAULT_HTML_OPTIONS.enableInDev) : true);
 }
 
 // Check if file should be excluded
 function shouldExclude(path, hexo) {
   if (!path) return false;
-  
-  const config = hexo.config.htmlnano;
-  const exclude = config?.exclude ?? DEFAULT_HTML_OPTIONS.exclude;
-  
-  return Array.isArray(exclude) && exclude.length > 0 && micromatch.isMatch(path, exclude);
+  const exclude = hexo.config.htmlnano?.exclude ?? DEFAULT_HTML_OPTIONS.exclude;
+  return micromatch.isMatch(path, exclude);
 }
 
 let compressionNoticeShown = false;
