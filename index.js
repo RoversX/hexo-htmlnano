@@ -28,7 +28,8 @@ const DEFAULT_HTML_OPTIONS = {
   removeComments: 'safe',
   removeEmptyAttributes: true,
   minifyJs: false,  // Disable htmlnano's minifyJs option
-  minifyCss: false  // Disable htmlnano's minifyCss option
+  minifyCss: false,  // Disable htmlnano's minifyCss option
+  minifySvg: false // Disable SVG minification to avoid svgo dependency
 };
 
 // UglifyJS options
