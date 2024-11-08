@@ -1,6 +1,6 @@
 {
   "name": "hexo-htmlnano-mini",
-  "version": "1.0.6",
+  "version": "2.0.0",
   "description": "A lightweight Hexo plugin to minify HTML using htmlnano",
   "main": "index.js",
   "scripts": {
@@ -16,10 +16,10 @@
   "author": "roversx",
   "license": "MIT",
   "dependencies": {
-    "cssnano": "^7.0.6",
+    "clean-css": "^5.3.3",
     "htmlnano": "^2.1.1",
-    "postcss": "^8.4.47",
-    "terser": "^5.36.0",
-    "micromatch": "^4.0.8"
+    "micromatch": "^4.0.8",
+    "posthtml": "^0.16.6",
+    "uglify-js": "^3.19.3"
   }
 }

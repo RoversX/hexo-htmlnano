@@ -2,8 +2,9 @@
 
 ![npm](https://img.shields.io/npm/v/hexo-htmlnano-mini) ![npm](https://img.shields.io/npm/l/hexo-htmlnano-mini) ![NPM Last Update](https://img.shields.io/npm/last-update/hexo-htmlnano-mini)
 
+A lightweight Hexo plugin to minify HTML/css/js using [htmlnano](https://github.com/posthtml/htmlnano). This plugin helps reduce HTML file sizes, improving loading speed and optimizing site performance.
 
-A lightweight Hexo plugin to minify HTML using [htmlnano](https://github.com/posthtml/htmlnano). This plugin helps reduce HTML file sizes, improving loading speed and optimizing site performance.
+The reason for making this plugin is to replace https://github.com/hexojs/hexo-html-minifier
 
 Npm Link: https://www.npmjs.com/package/hexo-htmlnano-mini
 
@@ -20,16 +21,16 @@ npm install hexo-htmlnano-mini --save
 After installation, add the following `htmlnano` configuration to your Hexo project’s `_config.yml` file. Adjust the settings as needed for your project.
 
 ```yaml
-htmlnano:
+htmlnano-mini:
   enable: true                        # Main switch
-  enableInDev: false                  # Whether to enable compression in the development server (hexo s)
-  exclude:                            # https://github.com/micromatch/micromatch#extended-globbing
-     #- '**/mycss.css'      
-  collapseWhitespace: conservative    # Compress whitespace conservatively
+  enableInDev: true                   # Whether to enable compression in the development server (hexo s)
+  exclude: 
+     #- '**/mycss.css'       
+  collapseWhitespace: conservative    # Conservatively collapse whitespace characters
   removeComments: safe                # Safely remove comments
   removeEmptyAttributes: true         # Remove empty attributes
-  minifyCss: true                     # Enable inline CSS minification
-  minifyJs: true                      # Enable inline JavaScript minification
+  cleancss: true                      # Enable clean-css to process inline CSS
+  uglifyjs: true                      # Enable compression of inline JavaScript
 ```
 
 ## Usage
