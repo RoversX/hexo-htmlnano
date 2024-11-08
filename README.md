@@ -4,7 +4,7 @@
 
 A lightweight Hexo plugin to minify HTML/css/js using [htmlnano](https://github.com/posthtml/htmlnano). This plugin helps reduce HTML file sizes, improving loading speed and optimizing site performance.
 
-The reason for making this plugin is to replace https://github.com/hexojs/hexo-html-minifier
+This plugin was made to replace https://github.com/hexojs/hexo-html-minifier
 
 Npm Link: https://www.npmjs.com/package/hexo-htmlnano-mini
 
