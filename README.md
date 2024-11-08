@@ -23,7 +23,7 @@ After installation, add the following `htmlnano` configuration to your Hexo proj
 ```yaml
 htmlnano-mini:
   enable: true                        # Main switch
-  enableInDev: true                   # Whether to enable compression in the development server (hexo s)
+  enableInDev: false                   # Whether to enable compression in the development server (hexo s)
   exclude: 
      #- '**/mycss.css'       
   collapseWhitespace: conservative    # Conservatively collapse whitespace characters
